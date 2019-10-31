@@ -37,4 +37,4 @@ if __name__ == '__main__':
     #bpy.app.handlers.frame_change_pre.append(FrameUpdateHandler)
 
     #render scene
-    utils.RenderToFolder('rendering', 'metaballs', 500, 500)
+    #utils.RenderToFolder('rendering', 'metaballs', 500, 500, 100, animation = True, frame_end = 50)
