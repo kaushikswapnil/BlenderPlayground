@@ -2,6 +2,8 @@ import bpy
 import colorsys
 import os
 from math import sin, cos, pi
+import numpy as np 
+import quaternion as quat
 
 tau = 2*pi
 
