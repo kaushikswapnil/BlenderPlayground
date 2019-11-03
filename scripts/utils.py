@@ -2,8 +2,8 @@ import bpy
 import colorsys
 import os
 from math import sin, cos, pi
+import math
 import numpy as np 
-import quaternion as quat
 
 tau = 2*pi
 
@@ -111,3 +111,17 @@ def RenderToFolder(renderFolder = 'rendering', renderName = 'render', resX = 800
 			scn.render.filepath = os.path.join(render_folder, renderName + '.png')
 			bpy.ops.render.render(write_still = True)
 
+def GetRotationMatrix(axis, angle):
+	axis = np.asarray(axis)
+	axis = axis/math.sqrt(np.dot(axis, axis))
+	a = math.cos(angle / 2.0)
+	b, c, d = -axis * math.sin(angle/2.0)
+	aa, bb, cc, dd = a*a, b*b, c*c, d*d
+	bc, ad, ac, ab, bd, cd = b *c, a * d, a * c, a * b, b * d, c * d
+	return np.array([[aa + bb - cc - dd, 2 * (bc + ad), 2 * (bd - ac)],
+                     [2 * (bc - ad), aa + cc - bb - dd, 2 * (cd + ab)],
+                     [2 * (bd + ac), 2 * (cd - ab), aa + dd - bb - cc]])
+
+def GetRotatedVector(vectorToRotate, rotationAxis, angle):
+	rMatrix = GetRotationMatrix(rotationAxis, angle)
+	return rMatrix.dot(vectorToRotate)

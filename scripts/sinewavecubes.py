@@ -35,16 +35,14 @@ maxDist = sqrt(2 * gridSize * gridSize)
 #animation & keyframe
 curFrame = 0
 
-keyFrameCount = 150
-invKeyFrameCount = 1.0 / (keyFrameCount - 1)
-
 frameRange = bpy.context.scene.frame_end - bpy.context.scene.frame_start
 if frameRange == 0:
     bpy.context.scene.frame_end = 150
     bpy.context.scene.frame_start = 0
     frameRange = 150
-else:
-    keyFrameCount = frameRange; #to return to start pos
+
+keyFrameCount = frameRange
+invKeyFrameCount = 1.0 / (keyFrameCount - 1)
     
 fIncr = ceil(frameRange * invKeyFrameCount)
 
@@ -93,14 +91,13 @@ for cubeIterX in range(0, numCubes, 1):
         for keyFrameIter in range(0, keyFrameCount, 1):
             #convert keyframe into angle
             fprc = keyFrameIter * invKeyFrameCount
-            angle = TWOPI * fprc
+            angle = 8 * TWOPI * fprc
             
             #set scene to current frame
             bpy.context.scene.frame_set(curFrame)
             
             #change scale
             current.scale[2] = minCubeSize + (sin(offset + angle)) * cubeSizeRange
-            
             #insert key frame for scale property
             current.keyframe_insert(data_path='scale', index = 2)
             
